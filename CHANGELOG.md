@@ -1,3 +1,7 @@
+## 1.0.1
+
+- Updated README documentation
+
 ## 1.0.0
 
 - Initial release of `native_video_trimmer`, renamed from `flutter_native_video_trimmer` (last upstream release 1.1.9)
