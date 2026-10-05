@@ -32,7 +32,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  native_video_trimmer: ^1.3.0
+  native_video_trimmer: ^1.0.0
 ```
 
 Or install via command line:

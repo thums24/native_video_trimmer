@@ -1,16 +1,12 @@
-## 1.3.0
+## 1.0.0
 
-- Rename package to `native_video_trimmer`
-- Add `getThumbnail` to generate JPEG thumbnails (wires up the previously unused native implementations)
-- Fix iOS `clearCache` missing trimmed videos (now sweeps both the caches and temporary directories)
+- Initial release of `native_video_trimmer`, renamed from `flutter_native_video_trimmer` (last upstream release 1.1.9)
+- Trim output `quality` presets: `original`, `hd1080`, `hd720`, `passthrough`, `hevc`
+- Thumbnail generation via `getThumbnail`
+- iOS Swift Package Manager support
+- Fix iOS `clearCache` missing trimmed videos; validate trim time range on Android
 
-## 1.2.0
-
-- Add `quality` option to `trimVideo` (`original`, `hd1080`, `hd720`, `passthrough`, `hevc`) for smaller output files
-- Validate the trim time range on Android, matching iOS (`INVALID_TIME_RANGE`)
-- Reject unknown quality values with `INVALID_ARGUMENTS` on both platforms
-
-## 1.1.9
+## 1.1.9 and earlier (as `flutter_native_video_trimmer`)
 
 - Update README.md
 
