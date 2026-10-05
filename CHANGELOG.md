@@ -1,3 +1,15 @@
+## 1.3.0
+
+- Rename package to `native_video_trimmer`
+- Add `getThumbnail` to generate JPEG thumbnails (wires up the previously unused native implementations)
+- Fix iOS `clearCache` missing trimmed videos (now sweeps both the caches and temporary directories)
+
+## 1.2.0
+
+- Add `quality` option to `trimVideo` (`original`, `hd1080`, `hd720`, `passthrough`, `hevc`) for smaller output files
+- Validate the trim time range on Android, matching iOS (`INVALID_TIME_RANGE`)
+- Reject unknown quality values with `INVALID_ARGUMENTS` on both platforms
+
 ## 1.1.9
 
 - Update README.md

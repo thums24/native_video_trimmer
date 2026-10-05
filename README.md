@@ -1,6 +1,6 @@
 # Flutter Native Video Trimmer
 
-[![pub package](https://img.shields.io/pub/v/flutter_native_video_trimmer.svg)](https://pub.dev/packages/flutter_native_video_trimmer)
+[![pub package](https://img.shields.io/pub/v/native_video_trimmer.svg)](https://pub.dev/packages/native_video_trimmer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A lightweight Flutter plugin for video manipulation using native code. Trim videos without FFmpeg dependency.
@@ -30,13 +30,13 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_native_video_trimmer: ^1.1.9
+  native_video_trimmer: ^1.3.0
 ```
 
 Or install via command line:
 
 ```bash
-flutter pub add flutter_native_video_trimmer
+flutter pub add native_video_trimmer
 ```
 
 ## 🚀 Usage
@@ -44,7 +44,7 @@ flutter pub add flutter_native_video_trimmer
 ### Import
 
 ```dart
-import 'package:flutter_native_video_trimmer/flutter_native_video_trimmer.dart';
+import 'package:native_video_trimmer/native_video_trimmer.dart';
 ```
 
 ### Initialize
@@ -67,6 +67,38 @@ final trimmedPath = await videoTrimmer.trimVideo(
   startTimeMs: 0,     // Start time in milliseconds
   endTimeMs: 5000,    // End time in milliseconds (5 seconds)
   includeAudio: true, // Optional, default is true
+  quality: VideoQuality.hd1080, // Optional, default is VideoQuality.original
+);
+```
+
+### Output Quality
+
+`quality` trades file size against encode time and compatibility.
+There is no 1440p/1600p step: iOS export presets are a fixed ladder
+(720p, 1080p, 4K, …), so `hd1080` is the finest downscale cap available.
+
+| Quality | Behavior | Best for |
+|---|---|---|
+| `original` (default) | Source resolution, H.264, highest quality | Max fidelity, largest files |
+| `hd1080` | Downscales sources taller than 1080p to 1080p | 4K phone footage at sane sizes |
+| `hd720` | Downscales sources taller than 720p to 720p | Previews, uploads on slow networks |
+| `passthrough` | No re-encode; cuts snap to keyframes | Fastest, lossless, size follows source |
+| `hevc` | H.265 encode | Smallest files; slower export, check playback support |
+
+Sources already below a cap are never upscaled, and a low-bitrate source
+is never re-encoded at a higher bitrate than it already has. If a device
+can't do what was asked (e.g. no HEVC encoder), the plugin falls back to a
+supported output instead of failing.
+
+### Get Thumbnail
+
+```dart
+// Grab a frame at 1.5s, scaled to 320x180
+final thumbnailPath = await videoTrimmer.getThumbnail(
+  positionMs: 1500, // Position in milliseconds
+  width: 320,       // Optional, omit both to keep source size
+  height: 180,      // Optional, omit both to keep source size
+  quality: 80,      // Optional JPEG quality 0-100, default is 80
 );
 ```
 

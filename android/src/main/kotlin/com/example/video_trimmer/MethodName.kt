@@ -3,6 +3,7 @@ package com.example.video_trimmer
 enum class MethodName(val method: String) {
     LOAD_VIDEO("loadVideo"),
     TRIM_VIDEO("trimVideo"),
+    GET_THUMBNAIL("getThumbnail"),
     CLEAR_TRIM_VIDEO_CACHE("clearTrimVideoCache");
 
     companion object {

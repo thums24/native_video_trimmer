@@ -15,7 +15,7 @@ class VideoTrimmerPlugin : FlutterPlugin, MethodCallHandler {
     private lateinit var methodManager: MethodManager
 
     companion object {
-        const val CHANNEL_NAME = "flutter_native_video_trimmer"
+        const val CHANNEL_NAME = "native_video_trimmer"
     }
 
     @UnstableApi override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {

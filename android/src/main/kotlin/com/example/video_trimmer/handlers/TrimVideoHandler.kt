@@ -4,6 +4,7 @@ import com.example.video_trimmer.BaseMethodHandler
 import android.content.Context
 import androidx.media3.common.util.UnstableApi
 import com.example.video_trimmer.VideoManager
+import com.example.video_trimmer.VideoQuality
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import kotlinx.coroutines.CoroutineScope    
@@ -19,22 +20,41 @@ class TrimVideoHandler (private val context: Context): BaseMethodHandler {
         val startTimeMs = call.argument<Number>("startTimeMs")?.toLong()
         val endTimeMs = call.argument<Number>("endTimeMs")?.toLong()
         val includeAudio = call.argument<Boolean>("includeAudio")?:true
-    
+        val qualityRaw = call.argument<String>("quality")
+
         if (startTimeMs == null || endTimeMs == null) {
             result.error("INVALID_ARGUMENTS", "Missing startTimeMs/endTimeMs parameters", null)
             return
         }
+
+        if (startTimeMs < 0 || endTimeMs <= startTimeMs) {
+            result.error(
+                "INVALID_TIME_RANGE",
+                "Invalid time range. endTimeMs must be greater than startTimeMs " +
+                    "and startTimeMs must be non-negative",
+                null
+            )
+            return
+        }
     
+        val quality = try {
+            VideoQuality.parse(qualityRaw)
+        } catch (e: VideoException) {
+            result.error("INVALID_ARGUMENTS", e.message, null)
+            return
+        }
+
         // Create a new scope that's tied only to this method call
         val methodScope = CoroutineScope(Dispatchers.Main + Job())
-        
+
         methodScope.launch {
             try {
                 val path = VideoManager.getInstance().trimVideo(
                     context,
                     startTimeMs = startTimeMs,
                     endTimeMs = endTimeMs,
-                    includeAudio=includeAudio
+                    includeAudio=includeAudio,
+                    quality=quality
                 )
                 result.success(path)
             } catch (e: Exception) {

@@ -5,7 +5,9 @@ import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MimeTypes
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.effect.Presentation
 import androidx.media3.transformer.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -43,11 +45,22 @@ class VideoManager {
         mediaMetadataRetriever.setDataSource(path)
     }
 
+    private fun sourceVideoHeight(): Int? =
+        mediaMetadataRetriever
+            .extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)
+            ?.toIntOrNull()
+
+    private fun sourceBitrateBps(): Int? =
+        mediaMetadataRetriever
+            .extractMetadata(MediaMetadataRetriever.METADATA_KEY_BITRATE)
+            ?.toIntOrNull()
+
    suspend fun trimVideo(
         context: Context,
         startTimeMs: Long,
         endTimeMs: Long,
-        includeAudio: Boolean
+        includeAudio: Boolean,
+        quality: VideoQuality = VideoQuality.ORIGINAL
     ): String {
         val videoPath = currentVideoPath ?: throw VideoException("No video loaded")
         
@@ -74,12 +87,53 @@ class VideoManager {
                     )
                     .build()
 
-                val editedMediaItem =
+                val editedMediaItemBuilder =
                     EditedMediaItem.Builder(mediaItem)
                         .setRemoveAudio(!includeAudio)
-                        .build()
+
+                // Downscale only: never upscale a source that is already
+                // below the cap.
+                VideoQuality.maxHeight(quality)?.let { maxHeight ->
+                    sourceVideoHeight()
+                        ?.takeIf { it > maxHeight }
+                        ?.let {
+                            editedMediaItemBuilder.setEffects(
+                                Effects(
+                                    emptyList(),
+                                    listOf(Presentation.createForHeight(maxHeight))
+                                )
+                            )
+                        }
+                }
+                val editedMediaItem = editedMediaItemBuilder.build()
 
                 val transformerBuilder = Transformer.Builder(context)
+
+                if (quality == VideoQuality.HEVC) {
+                    // Transformer falls back to a supported MIME type
+                    // automatically when the device cannot encode HEVC.
+                    transformerBuilder.setVideoMimeType(MimeTypes.VIDEO_H265)
+                }
+
+                // Cap the bitrate at the preset ceiling without ever raising
+                // a low-bitrate source up to the cap.
+                VideoQuality.bitrateCapBps(quality)?.let { cap ->
+                    val bitrate = sourceBitrateBps()
+                        ?.takeIf { it > 0 }
+                        ?.let { minOf(it, cap) }
+                        ?: cap
+                    transformerBuilder.setEncoderFactory(
+                        DefaultEncoderFactory.Builder(context)
+                            .setRequestedVideoEncoderSettings(
+                                VideoEncoderSettings.Builder()
+                                    .setBitrate(bitrate)
+                                    .build()
+                            )
+                            .build()
+                    )
+                }
+
+                transformerBuilder
                     .addListener(
                         object : Transformer.Listener {
                             override fun onCompleted(
