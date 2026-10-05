@@ -5,7 +5,7 @@ public class VideoTrimmerPlugin: NSObject, FlutterPlugin {
     
     private var methodManager: MethodManager
     
-    static let CHANNEL_NAME = "flutter_native_video_trimmer"
+    static let CHANNEL_NAME = "native_video_trimmer"
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: CHANNEL_NAME, binaryMessenger: registrar.messenger())

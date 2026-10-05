@@ -16,19 +16,27 @@ class VideoManager {
         currentAsset = AVAsset(url: url)
     }
     
-    func trimVideo(startTimeMs: Int64, endTimeMs: Int64, includeAudio: Bool = true, completion: @escaping (Result<String, Error>) -> Void) {
+    func trimVideo(startTimeMs: Int64, endTimeMs: Int64, includeAudio: Bool = true, quality: VideoQuality = .original, completion: @escaping (Result<String, Error>) -> Void) {
         guard let asset = currentAsset else {
             completion(.failure(VideoError.noVideoLoaded))
             return
         }
-        
+
         let compatiblePresets = AVAssetExportSession.exportPresets(compatibleWith: asset)
-        guard compatiblePresets.contains(AVAssetExportPresetHighestQuality) else {
+        // Prefer the requested preset, but fall back to highest quality so an
+        // exotic choice (e.g. HEVC on an unsupported asset) still exports
+        // instead of failing.
+        let presetName: String
+        if compatiblePresets.contains(quality.preferredPreset) {
+            presetName = quality.preferredPreset
+        } else if compatiblePresets.contains(AVAssetExportPresetHighestQuality) {
+            presetName = AVAssetExportPresetHighestQuality
+        } else {
             completion(.failure(VideoError.unsupportedFormat))
             return
         }
-        
-        guard let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) else {
+
+        guard let exportSession = AVAssetExportSession(asset: asset, presetName: presetName) else {
             completion(.failure(VideoError.exportSessionFailed))
             return
         }
@@ -110,13 +118,20 @@ class VideoManager {
     }
     
     func clearCache() {
-        let tempDirectory = URL(fileURLWithPath: NSTemporaryDirectory())
-        let enumerator = fileManager.enumerator(at: tempDirectory, includingPropertiesForKeys: nil)
+        // Trimmed videos are written to the caches directory while thumbnails
+        // go to the temporary directory, so both must be swept.
+        var directories = [URL(fileURLWithPath: NSTemporaryDirectory())]
+        if let cacheDir = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first {
+            directories.append(cacheDir)
+        }
 
-        while let url = enumerator?.nextObject() as? URL {
-            if (url.pathExtension == "mp4" || url.pathExtension == "jpg") &&
-               url.lastPathComponent.hasPrefix("video_trimmer") {
-                try? fileManager.removeItem(at: url)
+        for directory in directories {
+            let enumerator = fileManager.enumerator(at: directory, includingPropertiesForKeys: nil)
+            while let url = enumerator?.nextObject() as? URL {
+                if (url.pathExtension == "mp4" || url.pathExtension == "jpg") &&
+                   url.lastPathComponent.hasPrefix("video_trimmer") {
+                    try? fileManager.removeItem(at: url)
+                }
             }
         }
     }
