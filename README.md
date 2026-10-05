@@ -156,6 +156,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [iawtk2302](https://github.com/iawtk2302)
 [thums24] (https://github.com/thums24)
 
-## ⭐ Show Your Support
+##  Show Your Support
 
-If you find this plugin helpful, please give it a star on [GitHub](https://github.com/iawtk2302/flutter_native_video_trimmer)! It helps others discover the plugin and motivates me to keep improving it.
+If you find this plugin helpful, please give it a star on [GitHub](https://github.com/thums24/native_video_trimmer)! It helps others discover the plugin and motivates me to keep improving it.
