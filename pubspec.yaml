@@ -1,11 +1,9 @@
 name: native_video_trimmer
-description: "A lightweight Flutter plugin for video manipulation using native code. Trim videos without FFmpeg dependency."
-version: 1.1.0
-homepage: https://github.com/iawtk2302/flutter_native_video_trimmer
-repository: https://github.com/iawtk2302/flutter_native_video_trimmer
-issue_tracker: https://github.com/iawtk2302/flutter_native_video_trimmer/issues
-funding:
-  - https://buymeacoffee.com/iawtk
+description: "A lightweight Flutter plugin for video manipulation using native code. Trim videos without FFmpeg dependency. And create a thumbnail"
+version: 0.1.0
+homepage: https://github.com/thums24/native_video_trimmer
+repository: https://github.com/thums24/native_video_trimmer
+issue_tracker: https://github.com/thums24/native_video_trimmer/issues
 topics:
   - video
   - trimmer
@@ -47,9 +45,9 @@ flutter:
     platforms:
       android:
         package: com.example.video_trimmer
-        pluginClass: VideoTrimmerPlugin
+        pluginClass: NativeVideoTrimmerPlugin
       ios:
-        pluginClass: VideoTrimmerPlugin
+        pluginClass: NativeVideoTrimmerPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

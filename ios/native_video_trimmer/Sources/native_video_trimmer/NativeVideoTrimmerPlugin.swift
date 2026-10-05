@@ -1,7 +1,7 @@
 import Flutter
 import UIKit
 
-public class VideoTrimmerPlugin: NSObject, FlutterPlugin {
+public class NativeVideoTrimmerPlugin: NSObject, FlutterPlugin {
     
     private var methodManager: MethodManager
     
@@ -9,7 +9,7 @@ public class VideoTrimmerPlugin: NSObject, FlutterPlugin {
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: CHANNEL_NAME, binaryMessenger: registrar.messenger())
-        let instance = VideoTrimmerPlugin()
+        let instance = NativeVideoTrimmerPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
         
     

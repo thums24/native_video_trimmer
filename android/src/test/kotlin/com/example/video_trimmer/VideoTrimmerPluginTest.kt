@@ -16,7 +16,7 @@ import org.mockito.Mockito
 internal class VideoTrimmerPluginTest {
   @Test
   fun onMethodCall_getPlatformVersion_returnsExpectedValue() {
-    val plugin = VideoTrimmerPlugin()
+    val plugin = NativeVideoTrimmerPlugin()
 
     val call = MethodCall("getPlatformVersion", null)
     val mockResult: MethodChannel.Result = Mockito.mock(MethodChannel.Result::class.java)

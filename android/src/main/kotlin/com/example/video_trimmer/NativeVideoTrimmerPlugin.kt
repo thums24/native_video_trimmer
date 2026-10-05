@@ -9,7 +9,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 
 
-class VideoTrimmerPlugin : FlutterPlugin, MethodCallHandler {
+class NativeVideoTrimmerPlugin : FlutterPlugin, MethodCallHandler {
     private lateinit var channel: MethodChannel
     private lateinit var context: Context
     private lateinit var methodManager: MethodManager

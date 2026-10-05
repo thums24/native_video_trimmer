@@ -1,3 +1,13 @@
+## 0.1.0
+
+- Initial public release (the earlier 1.x line was retracted before adoption).
+- Trim output `quality` presets, thumbnail generation (`getThumbnail`, `getThumbnailData`, per-call `path`), iOS Swift Package Manager support.
+- Native plugin classes named `NativeVideoTrimmerPlugin` to coexist with `flutter_native_video_trimmer` without a registrar collision.
+
+## 1.1.1
+
+- Rename native plugin classes to `NativeVideoTrimmerPlugin` to avoid a launch crash when coexisting with `flutter_native_video_trimmer` (duplicate registrar key)
+
 ## 1.1.0
 
 - Add `getThumbnailData` returning JPEG bytes without file I/O

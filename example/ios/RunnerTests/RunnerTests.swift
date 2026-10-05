@@ -3,7 +3,7 @@ import UIKit
 import XCTest
 
 
-@testable import video_trimmer
+@testable import native_video_trimmer
 
 // This demonstrates a simple unit test of the Swift portion of this plugin's implementation.
 //
@@ -12,7 +12,7 @@ import XCTest
 class RunnerTests: XCTestCase {
 
   func testGetPlatformVersion() {
-    let plugin = VideoTrimmerPlugin()
+    let plugin = NativeVideoTrimmerPlugin()
 
     let call = FlutterMethodCall(methodName: "getPlatformVersion", arguments: [])
 
