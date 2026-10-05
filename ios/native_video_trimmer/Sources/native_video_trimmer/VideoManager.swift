@@ -90,30 +90,51 @@ class VideoManager {
         }
     }
     
-    func generateThumbnail(atMs position: Int64, size: CGSize?, quality: Int) throws -> String {
-        guard let asset = currentAsset else {
-            throw VideoError.noVideoLoaded
+    func thumbnailData(atMs position: Int64, size: CGSize?, quality: Int, videoPath: String? = nil) throws -> Data {
+        // A per-call path thumbs a file without disturbing the loaded video.
+        let asset: AVAsset
+        if let videoPath = videoPath {
+            guard fileManager.fileExists(atPath: videoPath) else {
+                throw VideoError.fileNotFound
+            }
+            asset = AVAsset(url: URL(fileURLWithPath: videoPath))
+        } else {
+            guard let currentAsset = currentAsset else {
+                throw VideoError.noVideoLoaded
+            }
+            asset = currentAsset
         }
-        
+
         let generator = AVAssetImageGenerator(asset: asset)
         generator.appliesPreferredTrackTransform = true
         if let size = size {
             generator.maximumSize = size
         }
-        
+
         // Convert milliseconds to CMTime
         let time = CMTime(value: position, timescale: 1000)
         let imageRef = try generator.copyCGImage(at: time, actualTime: nil)
         let image = UIImage(cgImage: imageRef)
-        
-        let timestamp = Int64(Date().timeIntervalSince1970 * 1000)
-        let outputURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("video_trimmer_\(timestamp).jpg")
-        
-        guard let data = image.jpegData(compressionQuality: CGFloat(quality) / 100),
-              let _ = try? data.write(to: outputURL) else {
+
+        guard let data = image.jpegData(compressionQuality: CGFloat(quality) / 100) else {
             throw VideoError.thumbnailGenerationFailed
         }
-        
+
+        return data
+    }
+
+    func generateThumbnail(atMs position: Int64, size: CGSize?, quality: Int, videoPath: String? = nil) throws -> String {
+        let data = try thumbnailData(atMs: position, size: size, quality: quality, videoPath: videoPath)
+
+        let timestamp = Int64(Date().timeIntervalSince1970 * 1000)
+        let outputURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("video_trimmer_\(timestamp).jpg")
+
+        do {
+            try data.write(to: outputURL)
+        } catch {
+            throw VideoError.thumbnailGenerationFailed
+        }
+
         return outputURL.path
     }
     

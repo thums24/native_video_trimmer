@@ -12,6 +12,7 @@ import androidx.media3.transformer.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.coroutines.resume
@@ -164,39 +165,69 @@ class VideoManager {
         }
     }
 
+    fun thumbnailData(
+        positionMs: Long,
+        width: Int? = null,
+        height: Int? = null,
+        quality: Int,
+        videoPath: String? = null
+    ): ByteArray {
+        // A per-call path thumbs a file without disturbing the loaded video.
+        // A short-lived retriever is used so the shared instance is untouched.
+        val oneShotRetriever = if (videoPath != null) {
+            if (!File(videoPath).exists()) {
+                throw VideoException("Video file not found")
+            }
+            MediaMetadataRetriever().also { it.setDataSource(videoPath) }
+        } else {
+            if (currentVideoPath == null) {
+                throw VideoException("No video loaded")
+            }
+            null
+        }
+        val retriever = oneShotRetriever ?: mediaMetadataRetriever
+        try {
+            val bitmap = retriever.getFrameAtTime(
+                positionMs * 1000, // Convert to microseconds
+                MediaMetadataRetriever.OPTION_CLOSEST_SYNC
+            ) ?: throw VideoException("Failed to generate thumbnail")
+
+            val scaledBitmap = if (width != null && height != null) {
+                Bitmap.createScaledBitmap(bitmap, width, height, true)
+            } else {
+                bitmap
+            }
+
+            val out = ByteArrayOutputStream()
+            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, quality, out)
+
+            if (scaledBitmap !== bitmap) {
+                scaledBitmap.recycle()
+            }
+            bitmap.recycle()
+
+            return out.toByteArray()
+        } finally {
+            oneShotRetriever?.release()
+        }
+    }
+
     suspend fun generateThumbnail(
         context: Context,
         positionMs: Long,
         width: Int? = null,
         height: Int? = null,
-        quality: Int
+        quality: Int,
+        videoPath: String? = null
     ): String = withContext(Dispatchers.IO) {
-        if (currentVideoPath == null) {
-            throw VideoException("No video loaded")
-        }
-
-        val bitmap = mediaMetadataRetriever.getFrameAtTime(
-            positionMs * 1000, // Convert to microseconds
-            MediaMetadataRetriever.OPTION_CLOSEST_SYNC
-        ) ?: throw VideoException("Failed to generate thumbnail")
-
-        val scaledBitmap = if (width != null && height != null) {
-            Bitmap.createScaledBitmap(bitmap, width, height, true)
-        } else {
-            bitmap
-        }
+        val bytes = thumbnailData(positionMs, width, height, quality, videoPath)
 
         val timestamp = System.currentTimeMillis()
         val outputFile = File(context.cacheDir, "video_trimmer_$timestamp.jpg")
-        
-        FileOutputStream(outputFile).use { out ->
-            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, quality, out)
-        }
 
-        if (scaledBitmap != bitmap) {
-            scaledBitmap.recycle()
+        FileOutputStream(outputFile).use { out ->
+            out.write(bytes)
         }
-        bitmap.recycle()
 
         outputFile.absolutePath
     }

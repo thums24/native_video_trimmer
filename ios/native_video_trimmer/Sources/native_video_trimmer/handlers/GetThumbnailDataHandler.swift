@@ -1,7 +1,7 @@
 import Flutter
 import UIKit
 
-class GetThumbnailHandler: BaseMethodHandler {
+class GetThumbnailDataHandler: BaseMethodHandler {
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         guard let args = call.arguments as? [String: Any],
               let position = args["positionMs"] as? Int else {
@@ -20,13 +20,13 @@ class GetThumbnailHandler: BaseMethodHandler {
         }
 
         do {
-            let path = try VideoManager.shared.generateThumbnail(
+            let data = try VideoManager.shared.thumbnailData(
                 atMs: Int64(position),
                 size: size,
                 quality: quality,
                 videoPath: videoPath
             )
-            result(path)
+            result(FlutterStandardTypedData(bytes: data))
         } catch {
             result(FlutterError(code: "THUMBNAIL_ERROR",
                               message: error.localizedDescription,

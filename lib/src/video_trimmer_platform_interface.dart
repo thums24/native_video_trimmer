@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'video_trimmer.dart';
@@ -42,8 +44,19 @@ abstract class VideoTrimmerPlatform extends PlatformInterface {
     int? width,
     int? height,
     int quality = 80,
+    String? path,
   }) {
     throw UnimplementedError('getThumbnail() has not been implemented.');
+  }
+
+  Future<Uint8List?> getThumbnailData({
+    required int positionMs,
+    int? width,
+    int? height,
+    int quality = 80,
+    String? path,
+  }) {
+    throw UnimplementedError('getThumbnailData() has not been implemented.');
   }
 
   Future<void> clearCache() {

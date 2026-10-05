@@ -21,6 +21,9 @@ void main() {
       if (call.method == 'getThumbnail') {
         return '/tmp/video_trimmer_thumb.jpg';
       }
+      if (call.method == 'getThumbnailData') {
+        return Uint8List.fromList([0xFF, 0xD8, 0xFF]);
+      }
       return null;
     });
   });
@@ -56,6 +59,20 @@ void main() {
     expect(log.single.arguments['positionMs'], 1500);
     expect(log.single.arguments['width'], 320);
     expect(log.single.arguments['height'], 180);
+    expect(log.single.arguments['quality'], 80);
+  });
+
+  test('getThumbnailData returns bytes and forwards path', () async {
+    final Uint8List? data = await platform.getThumbnailData(
+      positionMs: 2000,
+      path: '/tmp/video.mp4',
+    );
+
+    expect(data, Uint8List.fromList([0xFF, 0xD8, 0xFF]));
+    expect(log, hasLength(1));
+    expect(log.single.method, 'getThumbnailData');
+    expect(log.single.arguments['positionMs'], 2000);
+    expect(log.single.arguments['path'], '/tmp/video.mp4');
     expect(log.single.arguments['quality'], 80);
   });
 

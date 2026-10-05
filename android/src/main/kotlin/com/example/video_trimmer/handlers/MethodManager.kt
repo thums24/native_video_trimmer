@@ -13,6 +13,7 @@ class MethodManager(private val context: Context):BaseMethodHandler{
     MethodName.LOAD_VIDEO to LoadVideoHandler(),
     MethodName.TRIM_VIDEO to TrimVideoHandler(context),
     MethodName.GET_THUMBNAIL to GetThumbnailHandler(context),
+    MethodName.GET_THUMBNAIL_DATA to GetThumbnailDataHandler(),
     MethodName.CLEAR_TRIM_VIDEO_CACHE to ClearTrimVideoCacheHandler(context)
     )
 

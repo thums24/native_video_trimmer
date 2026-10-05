@@ -8,6 +8,7 @@ class MethodManager: BaseMethodHandler {
             .loadVideo: LoadVideoHandler(),
             .trimVideo: TrimVideoHandler(),
             .getThumbnail: GetThumbnailHandler(),
+            .getThumbnailData: GetThumbnailDataHandler(),
             .clearTrimVideoCache: ClearTrimVideoCacheHandler()
         ]
     }

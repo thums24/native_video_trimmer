@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'video_trimmer_platform_interface.dart';
 
@@ -50,22 +51,44 @@ class VideoTrimmer {
     );
   }
 
-  /// Generates a JPEG thumbnail of the loaded video at [positionMs].
-  /// Returns the path to the thumbnail file.
+  /// Generates a JPEG thumbnail at [positionMs] and returns the path
+  /// to the thumbnail file.
   /// Time is in milliseconds. When both [width] and [height] are given the
   /// thumbnail is scaled to that size, otherwise the source frame size is
   /// kept. [quality] is the JPEG quality from 0 to 100.
+  /// Uses the loaded video, or [path] to thumb a file without loading it.
   Future<String?> getThumbnail({
     required int positionMs,
     int? width,
     int? height,
     int quality = 80,
+    String? path,
   }) {
     return VideoTrimmerPlatform.instance.getThumbnail(
       positionMs: positionMs,
       width: width,
       height: height,
       quality: quality,
+      path: path,
+    );
+  }
+
+  /// Same as [getThumbnail] but returns the JPEG bytes directly instead
+  /// of writing a file. Prefer this when generating many thumbnails
+  /// (e.g. a timeline strip) to avoid file I/O churn.
+  Future<Uint8List?> getThumbnailData({
+    required int positionMs,
+    int? width,
+    int? height,
+    int quality = 80,
+    String? path,
+  }) {
+    return VideoTrimmerPlatform.instance.getThumbnailData(
+      positionMs: positionMs,
+      width: width,
+      height: height,
+      quality: quality,
+      path: path,
     );
   }
 

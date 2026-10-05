@@ -32,7 +32,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  native_video_trimmer: ^1.0.1
+  native_video_trimmer: ^1.1.0
 ```
 
 Or install via command line:
@@ -103,6 +103,26 @@ final thumbnailPath = await videoTrimmer.getThumbnail(
   quality: 80,      // Optional JPEG quality 0-100, default is 80
 );
 ```
+
+Thumbnails use the loaded video by default. Pass `path` to thumb a file
+without loading it first:
+
+```dart
+final thumbnailPath = await videoTrimmer.getThumbnail(
+  positionMs: 1500,
+  path: '/path/to/another.mp4',
+);
+```
+
+When generating many thumbnails (e.g. a timeline strip), prefer
+`getThumbnailData`, which returns the JPEG bytes directly and skips
+file I/O:
+
+```dart
+final bytes = await videoTrimmer.getThumbnailData(positionMs: 1500);
+```
+
+Local files only — network URLs are not supported.
 
 ### Clear Cache
 

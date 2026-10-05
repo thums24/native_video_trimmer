@@ -1,3 +1,8 @@
+## 1.1.0
+
+- Add `getThumbnailData` returning JPEG bytes without file I/O
+- `getThumbnail` accepts an optional `path` to thumb a file without loading it
+
 ## 1.0.1
 
 - Updated README documentation

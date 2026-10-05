@@ -1,6 +1,5 @@
 package com.example.video_trimmer.handlers
 
-import android.content.Context
 import androidx.media3.common.util.UnstableApi
 import com.example.video_trimmer.BaseMethodHandler
 import com.example.video_trimmer.VideoManager
@@ -11,9 +10,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @UnstableApi
-class GetThumbnailHandler(private val context: Context) : BaseMethodHandler {
+class GetThumbnailDataHandler : BaseMethodHandler {
     override fun handle(call: MethodCall, result: MethodChannel.Result) {
         val positionMs = call.argument<Number>("positionMs")?.toLong()
         val width = call.argument<Number>("width")?.toInt()
@@ -31,15 +31,17 @@ class GetThumbnailHandler(private val context: Context) : BaseMethodHandler {
 
         methodScope.launch {
             try {
-                val path = VideoManager.getInstance().generateThumbnail(
-                    context,
-                    positionMs = positionMs,
-                    width = width,
-                    height = height,
-                    quality = quality,
-                    videoPath = videoPath
-                )
-                result.success(path)
+                // Encoding touches bitmaps; keep it off the main thread.
+                val bytes = withContext(Dispatchers.IO) {
+                    VideoManager.getInstance().thumbnailData(
+                        positionMs = positionMs,
+                        width = width,
+                        height = height,
+                        quality = quality,
+                        videoPath = videoPath
+                    )
+                }
+                result.success(bytes)
             } catch (e: Exception) {
                 result.error("THUMBNAIL_ERROR", e.message, null)
             } finally {
