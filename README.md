@@ -1,4 +1,4 @@
-# Flutter Native Video Trimmer
+# Native Video Trimmer
 
 [![pub package](https://img.shields.io/pub/v/native_video_trimmer.svg)](https://pub.dev/packages/native_video_trimmer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -22,6 +22,8 @@ If you need more advanced video editing features (trim, merge, crop, rotate, etc
 
 - 📼 **Video Loading**: Load and process video files from any source
 - ✂️ **Precise Trimming**: Trim videos with millisecond precision
+- 🎚️ **Output Quality**: Five presets (`original`, `hd1080`, `hd720`, `passthrough`, `hevc`) to trade file size against encode time
+- 🖼️ **Thumbnails**: Grab JPEG frames at any position, with optional scaling
 - 🛠️ **Native Implementation**: Clean and efficient platform-specific code
 
 ## 📦 Installation
@@ -111,14 +113,14 @@ await videoTrimmer.clearCache();
 
 ## Example
 
-Check the [example](example) folder for a complete sample app demonstrating all features.
+Check the [example](example) folder for a sample app demonstrating the plugin.
 
 ## 📱 Platform Support
 
 | Platform | Implementation | Minimum Version | Status |
 | -------- | -------------- | --------------- | ------ |
 | Android  | Media3         | API 21 (5.0)    | ✅     |
-| iOS      | AVFoundation   | iOS 11.0        | ✅     |
+| iOS      | AVFoundation   | iOS 11.0 / 15.6 (SPM) | ✅ |
 
 ## 🛠️ Requirements
 
@@ -126,13 +128,14 @@ Check the [example](example) folder for a complete sample app demonstrating all 
 
 - Minimum SDK: API 21 (Android 5.0)
 - Target SDK: API 34
-- Kotlin: 1.9.0
+- Kotlin: 1.8.22
 - AndroidX
+- Media3: 1.4.1
 
 ### iOS
 
-- Minimum iOS: 11.0
-- Swift: 5.0
+- Minimum iOS: 11.0 (CocoaPods) / 15.6 (Swift Package Manager)
+- Swift: 5.0 (CocoaPods) / 5.9 (Swift Package Manager)
 - Xcode: Latest version
 
 ## 🤝 Contributing
