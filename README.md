@@ -5,28 +5,28 @@
 
 A lightweight Flutter plugin for video manipulation using native code. Trim videos without FFmpeg dependency.
 
-## ⭐️ IMPORTANT ⭐️
+## IMPORTANT 
 
 This library focuses specifically on video trimming functionality.
 If you need more advanced video editing features (trim, merge, crop, rotate, etc.), consider using [easy_video_editor](https://pub.dev/packages/easy_video_editor).
 
 ### Why choose this plugin?
 
-- 🚀 **No FFmpeg Dependency**: Uses platform-native video processing capabilities instead of heavy FFmpeg libraries
-- 🪶 **Lightweight**: Smaller app size and faster processing compared to FFmpeg-based solutions
-- ⚡️ **Native Performance**: Direct use of Media3 (Android) and AVFoundation (iOS) for optimal performance
-- 📱 **Memory Efficient**: Processes videos without loading entire files into memory
-- 🔒 **Privacy Focused**: All processing happens locally on the device
+-  **No FFmpeg Dependency**: Uses platform-native video processing capabilities instead of heavy FFmpeg libraries
+-  **Lightweight**: Smaller app size and faster processing compared to FFmpeg-based solutions
+-  **Native Performance**: Direct use of Media3 (Android) and AVFoundation (iOS) for optimal performance
+-  **Memory Efficient**: Processes videos without loading entire files into memory
+-  **Privacy Focused**: All processing happens locally on the device
 
-## ✨ Features
+##  Features
 
-- 📼 **Video Loading**: Load and process video files from any source
-- ✂️ **Precise Trimming**: Trim videos with millisecond precision
-- 🎚️ **Output Quality**: Five presets (`original`, `hd1080`, `hd720`, `passthrough`, `hevc`) to trade file size against encode time
-- 🖼️ **Thumbnails**: Grab JPEG frames at any position, with optional scaling
-- 🛠️ **Native Implementation**: Clean and efficient platform-specific code
+-  **Video Loading**: Load and process video files from any source
+-  **Precise Trimming**: Trim videos with millisecond precision
+-  **Output Quality**: Five presets (`original`, `hd1080`, `hd720`, `passthrough`, `hevc`) to trade file size against encode time
+-  **Thumbnails**: Grab JPEG frames at any position, with optional scaling
+-  **Native Implementation**: Clean and efficient platform-specific code
 
-## 📦 Installation
+##  Installation
 
 Add this to your package's `pubspec.yaml` file:
 
@@ -41,7 +41,7 @@ Or install via command line:
 flutter pub add native_video_trimmer
 ```
 
-## 🚀 Usage
+##  Usage
 
 ### Import
 
@@ -115,14 +115,14 @@ await videoTrimmer.clearCache();
 
 Check the [example](example) folder for a sample app demonstrating the plugin.
 
-## 📱 Platform Support
+##  Platform Support
 
 | Platform | Implementation | Minimum Version | Status |
 | -------- | -------------- | --------------- | ------ |
 | Android  | Media3         | API 21 (5.0)    | ✅     |
 | iOS      | AVFoundation   | iOS 11.0 / 15.6 (SPM) | ✅ |
 
-## 🛠️ Requirements
+##  Requirements
 
 ### Android
 
@@ -138,22 +138,23 @@ Check the [example](example) folder for a sample app demonstrating the plugin.
 - Swift: 5.0 (CocoaPods) / 5.9 (Swift Package Manager)
 - Xcode: Latest version
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are always welcome! Here's how you can help:
 
-1. 🐛 Report bugs by opening an issue
-2. 💡 Suggest new features or improvements
-3. 📝 Improve documentation
-4. 🔧 Submit pull requests
+1.  Report bugs by opening an issue
+2.  Suggest new features or improvements
+3.  Improve documentation
+4.  Submit pull requests
 
-## 📄 License
+##  License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📧 Author
+##  Author
 
 [iawtk2302](https://github.com/iawtk2302)
+[thums24] (https://github.com/thums24)
 
 ## ⭐ Show Your Support
 
