@@ -154,7 +154,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ##  Author
 
 [iawtk2302](https://github.com/iawtk2302)
-[thums24] (https://github.com/thums24)
+[thums24](https://github.com/thums24)
 
 ##  Show Your Support
 
