@@ -1,4 +1,4 @@
-package com.example.video_trimmer
+package com.example.native_video_trimmer
 
 enum class MethodName(val method: String) {
     LOAD_VIDEO("loadVideo"),

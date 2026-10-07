@@ -1,3 +1,7 @@
+## 0.2.1
+
+- Renames the Android plugin package and namespace from `com.example.video_trimmer` to `com.example.native_video_trimmer`, matching iOS.
+
 ## 0.2.0
 
 - Updates the minimum supported SDK version to Flutter 3.44/Dart 3.12.

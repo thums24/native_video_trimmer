@@ -1,4 +1,4 @@
-package com.example.video_trimmer
+package com.example.native_video_trimmer
 
 import android.content.Context
 import android.graphics.Bitmap

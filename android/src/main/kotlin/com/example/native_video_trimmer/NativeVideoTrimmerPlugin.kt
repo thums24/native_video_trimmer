@@ -1,8 +1,8 @@
-package com.example.video_trimmer
+package com.example.native_video_trimmer
 
 import android.content.Context
 import androidx.media3.common.util.UnstableApi
-import com.example.video_trimmer.handlers.*
+import com.example.native_video_trimmer.handlers.*
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel

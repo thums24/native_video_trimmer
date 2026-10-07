@@ -1,4 +1,4 @@
-package com.example.video_trimmer
+package com.example.native_video_trimmer
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel

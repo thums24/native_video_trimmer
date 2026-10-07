@@ -1,4 +1,4 @@
-group = "com.example.video_trimmer"
+group = "com.example.native_video_trimmer"
 version = "1.0-SNAPSHOT"
 
 buildscript {
@@ -26,7 +26,7 @@ apply plugin: "com.android.library"
 
 android {
     if (project.android.hasProperty("namespace")) {
-        namespace = "com.example.video_trimmer"
+        namespace = "com.example.native_video_trimmer"
     }
 
     compileSdk = 34

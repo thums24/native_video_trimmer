@@ -1,4 +1,4 @@
-package com.example.video_trimmer
+package com.example.native_video_trimmer
 
 /**
  * Output quality preset, mirroring the Dart `VideoQuality` enum.
