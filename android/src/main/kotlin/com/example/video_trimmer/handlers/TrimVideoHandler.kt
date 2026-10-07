@@ -3,6 +3,7 @@ package com.example.video_trimmer.handlers
 import com.example.video_trimmer.BaseMethodHandler
 import android.content.Context
 import androidx.media3.common.util.UnstableApi
+import com.example.video_trimmer.VideoException
 import com.example.video_trimmer.VideoManager
 import com.example.video_trimmer.VideoQuality
 import io.flutter.plugin.common.MethodCall
